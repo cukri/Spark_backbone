@@ -1,45 +1,32 @@
+from xml.parsers.expat import model
+
 from pyspark.sql import DataFrame
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.regression import LinearRegression
 from pyspark.ml.evaluation import RegressionEvaluator
 
 
-def train_model(train_df: DataFrame, test_df: DataFrame):
-    """
-    Trenuje model regresyjny i ocenia go
-    """
+def train_model(train_df, test_df, feature_cols):
 
-    feature_cols = [
-        "lag_1",
-        "delta_1",
-        "rolling_avg_3",
-        "hour",
-        "day_of_week"
-    ]
+    train_df = train_df.dropna(subset=feature_cols + ["target"])
+    test_df = test_df.dropna(subset=feature_cols + ["target"])
 
-    # vector
+    # assembler
     assembler = VectorAssembler(
-    inputCols=feature_cols,
-    outputCol="features",
-    handleInvalid="skip"
+        inputCols=feature_cols,
+        outputCol="features"
     )
 
     train_df = assembler.transform(train_df)
     test_df = assembler.transform(test_df)
 
     # model
-    model = LinearRegression(
-        featuresCol="features",
-        labelCol="target"
-    )
+    lr = LinearRegression(labelCol="target", featuresCol="features")
+    model = lr.fit(train_df)
 
-    #  trening
-    model = model.fit(train_df)
-
-    #  predykcja
     predictions = model.transform(test_df)
 
-    #  ewaluacja
+    # RMSE
     evaluator = RegressionEvaluator(
         labelCol="target",
         predictionCol="prediction",
@@ -47,7 +34,5 @@ def train_model(train_df: DataFrame, test_df: DataFrame):
     )
 
     rmse = evaluator.evaluate(predictions)
-
-    print(f"RMSE: {rmse}")
 
     return model, predictions, rmse
