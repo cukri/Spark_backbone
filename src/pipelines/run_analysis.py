@@ -36,10 +36,16 @@ def run():
         "stddev(target)"
     ).show()
 
+    print("\n=== COLUMNS ===")
+    print(train_df.columns)
+    print("Rows after FE:", train_df.count())
+
     # ======================
     # FEATURE CORRELATION
     # ======================
-    print("\n=== CORRELATIONS WITH TARGET ===\n", flush=True)
+    """"   print("\n=== CORRELATIONS WITH TARGET ===\n", flush=True)
+
+
 
     feature_cols = [
         "lag_1",
@@ -54,7 +60,7 @@ def run():
         print(f"{col} vs target: {corr}", flush=True)
 
     print("\n=== ANALYSIS DONE ===", flush=True)
-
+    """
 
 if __name__ == "__main__":
     run()

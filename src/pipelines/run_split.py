@@ -6,7 +6,7 @@ def run():
     spark = get_spark()
 
     print("Loading metrics...")
-    df = spark.read.parquet("data/processed/metrics")
+    df = spark.read.parquet("data/processed/features")
 
     print("Splitting...")
     train_df, test_df = time_based_split(df)

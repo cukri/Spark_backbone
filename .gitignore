@@ -1,10 +1,22 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Ignored default folder with query files
-/queries/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Data
+data/
+
+# Spark temp
+spark-warehouse/
+metastore_db/
+
+# Mac/Linux noise
+.DS_Store
+*.crc
+_SUCCESS
